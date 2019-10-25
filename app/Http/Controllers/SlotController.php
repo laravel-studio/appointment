@@ -1,0 +1,169 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Slot;
+use Illuminate\Support\Facades\DB;
+use App\Service;
+use App\Employeeservice;
+use App\User;
+class SlotController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $slots=Slot::with(['employeeservices.users', 'employeeservices.services'])->get();
+        return view('slot.lists', compact('slots'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $services=Service::get();
+        $employees=User::where('type',2)->get();
+        $employeeservices = Employeeservice::all();
+        $days = ['Monday','Tuesday','Wednesday','Thrusday','Friday','Saturday','Sunday'];
+
+        return view('slot.create', compact('services','employeeservices','employees','days'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'service' => 'required',
+            'employee_service_id' => 'required',
+            'days' => 'required',
+            'starttime' => 'required',
+            'endtime' => 'required',
+        ]);
+
+        Slot::create([
+            'employee_service_id' => $request->service,
+            'days' => $request->days,
+            'start_time' => $request->starttime,
+            'end_time' => $request->endtime
+        ]);
+
+
+        return redirect('/slots')->with('success', 'Slot created successfully');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $employees = User::where('type',2)->get();
+        $services = Service::get();
+        $days = ['Monday', 'Tuesday', 'Wednesday', 'Thrusday', 'Friday', 'Saturday', 'Sunday'];
+
+        $slot = Slot::with(['employeeservices.users', 'employeeservices.services'])->findOrFail($id);
+        // dd($slot);
+        return view('slot.edit', compact('slot', 'employees', 'services', 'days'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $slots = Slot::findOrFail($id);
+
+        $request->validate([
+            'days' => 'required',
+            'starttime' => 'required',
+            'endtime' => 'required'
+        ]);
+
+        $slots->days = $request->days;
+        $slots->start_time = $request->starttime;
+        $slots->end_time = $request->endtime;
+
+        $slots->save();
+        return redirect('slots')->with('info','Slot updated successfully');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        Slot::findOrFail($id)->delete();
+        return redirect('slots')->with('error', 'Slot trashed successfully');
+    }
+
+    public function download()
+    {
+        // $table = Slots::get();
+        //     $filename = "slots.csv";
+        //     $handle = fopen($filename, 'w+');
+        //     fputcsv($handle, array('tweet text', 'screen name', 'name', 'created at'));
+
+        //     foreach($table as $row) {
+        //         fputcsv($handle, array($row['slot_name'], $row['service'], $row['days'], $row['start_at']));
+        //     }
+
+        //     fclose($handle);
+
+        //     $headers = array(
+        //         'Content-Type' => 'text/csv',
+        //     );
+
+        //     return Response::download($filename, 'slots.csv', $headers);
+        return redirect('slots')->with('info', 'Slots downloaded successfully.');
+    }
+    public function emplist($id,Request $request)
+    {
+        /**
+         * if no booking is there for the selected slot only then slots can be deleted
+         */
+        if ($request->ajax())
+        {
+            $users= User::getUserDetails($id);
+            $str='';
+            foreach($users as $user)
+            {
+                $str.='<input type="radio" name="employee_service_id" value="'.$user->service_id.'">'.$user->name.'<br>';
+            }
+            return ($str);
+            die();
+        }
+        return response(['status' => false, 'code' => 403,], 403);
+    }//end of function
+}
