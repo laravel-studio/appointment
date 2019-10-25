@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Role;
 use App\Permission;
 use Illuminate\Support\Facades\DB;
+use App\Exports\RolesExport;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Controllers\Controller;
 class RoleController extends Controller
 {
     /**
@@ -113,5 +116,11 @@ class RoleController extends Controller
         // DB::table('roles')->where('id', $id)->delete();
         Role::findOrFail($id)->delete();
         return redirect('/roles')->with('error', 'Role trashed successfully!');
+    }
+
+    public function exportexcel()
+    {
+        // libxml_use_internal_errors(true);
+        return Excel::download(new RolesExport, 'roles.xlsx');
     }
 }

@@ -5,17 +5,18 @@
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
 		<h1>
-			Edit Employee
+			{{__('messages.edit_employee')}}
 			<small>
-			    edit employee details.
+			    {{__('messages.edit_employee_details')}}
 			</small>
 		</h1>
 		<ol class="breadcrumb">
-			<li><a href="{{url('/')}}"><i class="fa fa-dashboard"></i> Home</a></li>
-			<li><a href="{{url('/')}}/employees">Employee</a></li>
-			<li class="active">Edit Employee</li>
+			<li><a href="{{url('/')}}"><i class="fa fa-dashboard"></i> {{__('messages.home')}}</a></li>
+			<li><a href="{{url('/')}}/employees">{{__('messages.employee')}}</a></li>
+			<li class="active">{{__('messages.edit_employee')}}</li>
 		</ol>
-	</section>
+    </section>
+    <section class="content">
 	<div class="row">
 		<div class="col-xs-12">
 			<div class="box">
@@ -27,21 +28,22 @@
                     <form action="{{url('/')}}/employees/update/{{$employee->id}}" method="POST">
 						@csrf
 						@method('PATCH')
-						<div class="form-group">
-						    <label for="name">Employee Name:</label>
+						<div class="form-group col-md-12">
+						    <label for="name">{{__('messages.employee_name')}}</label>
 						    <input type="text" name="name" class="form-control" id="name"  value="{{$employee->name}}">
 						</div>
-						<div class="form-group">
-						    <label for="name">Employee Email:</label>
+						<div class="form-group col-md-12">
+						    <label for="name">{{__('messages.employee_email')}}</label>
 						    <input type="text" name="email" class="form-control" id="email"  value="{{$employee->email}}" readonly>
 						</div>
-						<div class="form-group">
-						    <button type="submit" name="submit" class="btn btn-primary">Update Details</button>
+						<div class="form-group col-md-12">
+						    <button type="submit" name="submit" class="btn btn-primary">{{__('messages.update_details')}}</button>
 						</div>
 					</form>
 				</div>
 			</div>
 		</div>
-	</div>
+    </div>
+    </section>
 </div>
 @endsection

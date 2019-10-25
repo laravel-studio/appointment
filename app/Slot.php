@@ -24,11 +24,27 @@ class Slot extends Model
         $slots = DB::table('slots')
             ->select('slots.*')
             ->join('employeeservices', 'employeeservices.id','slots.employee_service_id')
-            // ->join('appointments', 'appointments.slot_id', 'slots.id')
+            ->join('appointments', 'appointments.slot_id', 'slots.id')
             ->where('slots.id', '=', $id)
             ->get();
 
 
         return $slots;
+    }
+
+    /**
+     * Slots edit path for testing
+     */
+    public function editPath()
+    {
+        return "slots/emplist/{$this->id}";
+    }
+
+    /**
+     * Slots update path for testing
+     */
+    public function updatePath()
+    {
+        return "slots/{$this->id}";
     }
 }

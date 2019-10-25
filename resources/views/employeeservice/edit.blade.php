@@ -5,15 +5,15 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
         <h1>
-            {{__('Edit Service Assignments')}}
+            {{__('messages.edit_service_assignments')}}
             <small>
-                {{__('Change service assignment details')}}
+                {{__('messages.change_service_assignment_details')}}
             </small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="{{url('/')}}"><i class="fa fa-dashboard"></i> {{__('Home')}}</a></li>
-            <li><a href="{{url('/')}}/employees/services">{{__('Employeeservices')}}</a></li>
-            <li class="active">{{__('Edit Employeeservices')}}</li>
+            <li><a href="{{url('/')}}"><i class="fa fa-dashboard"></i> {{__('messages.home')}}</a></li>
+            <li><a href="{{url('/')}}/employees/services">{{__('messages.employeeservices')}}</a></li>
+            <li class="active">{{__('messages.edit_employeeservices')}}</li>
         </ol>
         </section>
         <section class="content">
@@ -26,12 +26,14 @@
                     <!-- /.box-header -->
                     <div class="box-body">
 
-                        <form action="/employees/services/update/{{$employeeservices->id}}" method="POST">
+                    <form action="{{url('/')}}/employees/services/update/{{$employeeservices->id}}" method="POST">
                             @csrf
                             @method('PATCH')
                             <div class="form-group col-md-12">
-                                <label for="service_name">{{__('Service Name')}}</label>
-                                <select name="service_id" class="form-control" id="service_name">
+                                <label for="service_name">{{__('messages.service_name')}}</label>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <select name="service_id" class="form-control" id="service_name" style="width:200px;">
                                     <option value="">Select Service</option>
                                     @foreach($services as $service)
                                         <option value="{{$service->id}}" {{$service->id==$employeeservices->services->id?"selected":''}}>{{ $service->title }}</option>
@@ -44,8 +46,10 @@
                                 @enderror
                             </div>
                             <div class="form-group col-md-12">
-                                <label for="employees_name">{{__('Employee:')}}</label>
-                                <select id="employees_name" name="employee_id" class="form-control">
+                                <label for="employees_name">{{__('messages.employee')}}</label>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <select id="employees_name" name="employee_id" class="form-control" style="width:200px;">
                                     <option value="">Select Employees</option>
                                     @foreach($employees as $employee)
                                         <option value="{{ $employee->id }}" {{$employee->id==$employeeservices->users->id?"selected":''}}>{{ $employee->name }}</option>
@@ -57,9 +61,9 @@
                                     </span>
                                 @enderror
                             </div>
-                            <div class="form-group col-md-12">
-                                <label id="service_price">{{__('Price:')}}</label>
-                                <input class="form-control" id="service_price" name="price" value="{{$employeeservices->price}}">
+                            <div class="form-group col-md-2">
+                                <label id="service_price">{{__('messages.price')}}</label>
+                                <input class="form-control" id="service_price" name="price" value="{{$employeeservices->price}}" style="width:200px;">
                                 @error('price')
                                     <span class="invalid-feedback text-danger" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -67,7 +71,7 @@
                                 @enderror
                             </div>
                             <div class="form-group col-md-12">
-                                <button type="submit" name="submit" class="btn btn-primary">Update Assignments</button>
+                                <button type="submit" name="submit" class="btn btn-primary">{{__('messages.update_assignments')}}</button>
                             </div>
                         </form>
                     </div>

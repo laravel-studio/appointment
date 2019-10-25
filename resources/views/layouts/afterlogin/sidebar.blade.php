@@ -5,9 +5,11 @@
       <!-- Sidebar user panel -->
       <div class="user-panel">
          @if(Auth::user())
+            @if((Auth::user()->profileimage)!=''? $img_src=asset('images/'.Auth::user()->profileimage) : $img_src=asset('images/user-common.png'))
         <div class="pull-left image">
-          <img src="{{ asset('images/'.Auth::user()->profileimage) }}" class="img-circle" alt="User Image">
+          <img src="{{ $img_src }}" class="img-circle" alt="User Image">
         </div>
+            @endif
          @endif
         <div class="pull-left info">
           @if(Auth::user())
@@ -33,114 +35,116 @@
 
 
       <ul class="sidebar-menu" data-widget="tree">
-        <li class="header">MAIN NAVIGATION</li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
+        <li class="header">{{__('messages.main_navigation')}}</li>
+        <li class="">
+          <a href="{{url('/')}}/dashboard">
+            <i class="fa fa-dashboard"></i> <span>{{__('messages.dashboard')}}</span>
           </a>
-          <ul class="treeview-menu">
-            <li><a href="{{url('/')}}/roles"><i class="fa fa-circle-o"></i> Roles</a></li>
-            <li><a href="{{url('/')}}/employees"><i class="fa fa-circle-o"></i> Employees</a></li>
-            <li><a href="{{url('/')}}/users"><i class="fa fa-circle-o"></i> Customers</a></li>
-          </ul>
         </li>
+        @if(Auth::user()->type==1)
         <li class="treeview">
           <a href="roles">
-            <i class="fa fa-user-circle"></i> <span>Roles</span>
+            <i class="fa fa-user-circle"></i> <span>{{__('messages.roles')}}</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="{{url('/')}}/roles"><i class="fa fa-circle-o"></i> All Roles</a></li>
-            <li><a href="{{url('/')}}/roles/create"><i class="fa fa-circle-o"></i> Add New</a></li>
+            <li><a href="{{url('/')}}/roles"><i class="fa fa-list"></i> {{__('messages.all_roles')}}</a></li>
+            <li><a href="{{url('/')}}/roles/create"><i class="fa fa-plus-square"></i> {{__('messages.add_new')}}</a></li>
           </ul>
         </li>
+        @endif
+
+        @if(Auth::user()->type==1)
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-user"></i> <span>Employees</span>
+            <i class="fa fa-user"></i> <span>{{__('messages.employee')}}</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-          <li><a href="{{url('/')}}/employees"><i class="fa fa-circle-o"></i> All Employees</a></li>
-            <li><a href="{{url('/')}}/employees/create"><i class="fa fa-circle-o"></i> Add New</a></li>
-            <li><a href="{{url('/')}}/employees/services"><i class="fa fa-circle-o"></i> Services</a></li>
+          <li><a href="{{url('/')}}/employees"><i class="fa fa-list"></i> {{__('messages.all_employees')}}</a></li>
+            <li><a href="{{url('/')}}/employees/create"><i class="fa fa-plus-square"></i> {{__('messages.add_new')}}</a></li>
+            <li><a href="{{url('/')}}/employees/services"><i class="fa fa-suitcase"></i> {{__('messages.services')}}</a></li>
           </ul>
         </li>
+        @endif
+
+        @if(Auth::user()->type==1)
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-user"></i> <span>Customers</span>
+            <i class="fa fa-users"></i> <span>{{__('messages.customer')}}</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-          <li><a href="{{url('/')}}/users"><i class="fa fa-circle-o"></i> All Customers</a></li>
-            <li><a href="{{url('/')}}/users/create"><i class="fa fa-circle-o"></i> Add New</a></li>
+          <li><a href="{{url('/')}}/users"><i class="fa fa-list"></i> {{__('messages.all_customers')}}</a></li>
+            <li><a href="{{url('/')}}/users/create"><i class="fa fa-plus-square"></i> {{__('messages.add_new')}}</a></li>
           </ul>
         </li>
+        @endif
 
          <li class="">
           <a href="{{url('/')}}/booking/calendar">
-            <i class="fa fa-table"></i> <span>Booking Calender</span>
+            <i class="fa fa-table"></i> <span>{{__('messages.booking_calender')}}</span>
           </a>
-
         </li>
 
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-clock-o"></i> <span>Booking Slots</span>
+            <i class="fa fa-clock-o"></i> <span>{{__('messages.booking_slots')}}</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-          <li><a href="{{url('/')}}/slots"><i class="fa fa-circle-o"></i> All slots</a></li>
-            <li><a href="{{url('/')}}/slots/create"><i class="fa fa-circle-o"></i> Add New</a></li>
-          </ul>
-        </li>
-
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-user"></i> <span>Services</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-          <li><a href="{{url('/')}}/services"><i class="fa fa-circle-o"></i> All Services</a></li>
-            <li><a href="{{url('/')}}/services/create"><i class="fa fa-circle-o"></i> Add New</a></li>
+          <li><a href="{{url('/')}}/slots"><i class="fa fa-list"></i> {{__('messages.all_slots')}}</a></li>
+            <li><a href="{{url('/')}}/slots/create"><i class="fa fa-plus-square"></i> {{__('messages.add_new')}}</a></li>
           </ul>
         </li>
 
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-user"></i> <span>{{__('Settings') }}</span>
+            <i class="fa fa-suitcase"></i> <span>{{__('messages.services')}}</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-          <li><a href="{{url('/')}}/settings/"><i class="fa fa-circle-o"></i>{{ __('General Settings') }} </a></li>
+          <li><a href="{{url('/')}}/services"><i class="fa fa-list"></i> {{__('messages.all_services')}}</a></li>
+            @if(Auth::user()->type==1)
+            <li><a href="{{url('/')}}/services/create"><i class="fa fa-plus-square"></i> {{__('messages.add_new')}}</a></li>
+            @endif
+          </ul>
+        </li>
+
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-cog"></i> <span>{{__('messages.settings') }}</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+          <li><a href="{{url('/')}}/settings/"><i class="fa fa-cogs"></i>{{ __('messages.general_settings') }} </a></li>
           </ul>
         </li>
 
         <li class="treeview">
             <a href="#">
-            <i class="fa fa-black-tie"></i> <span>Appointments</span>
+            <i class="fa fa-black-tie"></i> <span>{{__('messages.appointments')}}</span>
             <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
             </span>
             </a>
             <ul class="treeview-menu">
-            <li><a href="{{url('/')}}/appointments"><i class="fa fa-list"></i> All Appointments</a></li>
-            <li><a href="{{url('/')}}/appointments/book"><i class="fa fa-plus-square"></i> Add New</a></li>
+            @if( Auth::user()->type==1 || Auth::user()->type==2 )
+              <li><a href="{{url('/')}}/appointments"><i class="fa fa-list"></i> {{__('messages.all_appointments')}}</a></li>
+            @endif
+                <li><a href="{{url('/')}}/appointments/book"><i class="fa fa-plus-square"></i> {{__('messages.book_new_appointment')}}</a></li>
             </ul>
         </li>
 

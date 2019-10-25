@@ -14,4 +14,12 @@ class Role extends EntrustRole
 
     protected $fillable = [ 'name', 'display_name', 'description' ];
     protected $dates = ['deleted_at'];
+
+    /**
+     * Role edit path return for testing
+     */
+    public function updatePath()
+    {
+        return "roles/update/{$this->id}";
+    }
 }

@@ -5,59 +5,57 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
         <h1>
-            {{-- Data Tables --}}
-            Roles
+            {{__('messages.roles')}}
             <small>
-                {{-- advanced tables --}}
-                all role types
+                {{__('messages.list_of_all_roles')}}
             </small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">Roles</li>
+            <li><a href="#"><i class="fa fa-dashboard"></i> {{__('messages.home')}}</a></li>
+            <li class="active">{{__('messages.roles')}}</li>
         </ol>
         </section>
         <section class="content">
             <div class="row">
                 <div class="col-xs-12">
                     @include('role.flash-message')
-                <div class="box">
+                <div class="box col-md-12">
                     <div class="box-header">
-                    {{-- <h3 class="box-title">Role Types</h3> --}}
-                    <span style="float: right;"><a href="{{url('/')}}/roles/create" class="btn btn-info">Add Role</a></span>
+                        <span style="float: right;"><a href="{{url('/')}}/roles/create" class="btn btn-info">{{__('messages.add_role')}}</a></span>
                     </div>
                     <!-- /.box-header -->
+                    @if($role != '')
+                        <div class="col-md-12">
+                            <span><a href="{{url('/')}}/roles/exportexcel" class="btn btn-success"><i class="fa fa-table" aria-hidden="true" style="padding-right:7px;"></i>{{__('messages.export_as_excel')}}</a></span>
+                        </div>
+                    @endif
                     <div class="box-body">
                     <table id="rolelist" class="table table-bordered table-striped">
                         <thead>
                         <tr>
-
-                        <th>Display Name</th>
-                        <th>Name</th>
-                        <th>Actions</th>
+                            <th>{{__('messages.role_display_name')}}</th>
+                            <th>{{__('messages.role_name')}}</th>
+                            <th>{{__('messages.actions')}}</th>
                         </tr>
                         </thead>
                         <tbody>
                             @forelse($role as $roles)
                                 <tr>
-                                    <td>{{ $roles->display_name }}</td>
+                                    <td>{{ ucwords($roles->display_name) }}</td>
                                     <td>{{ $roles->name }}</td>
                                     <td>
-                                        <a href="roles/edit/{{$roles->id}}" style="padding-right: 10px;"><i class="fa fa-pencil-square-o" aria-hidden="true"><span style="padding-left: 3px;">Edit</span></i></a>
-
-                                        
+                                        <a href="roles/edit/{{$roles->id}}" style="padding-right: 10px;"><i class="fa fa-pencil-square-o" aria-hidden="true"><span style="padding-left: 3px;">{{__('messages.edit')}}</span></i></a>
                                     </td>
                                 </tr>
                                 @empty
-                                    <tr><td colspan="3">No roles yet.</td></tr>
+                                    <tr><td colspan="3">{{__('messages.no_roles_yet')}}</td></tr>
                             @endforelse
-
                         </tbody>
                         <tfoot>
                         <tr>
-                        <th>Display Name</th>
-                        <th>Name</th>
-                        <th>Actions</th>
+                            <th>{{__('messages.role_display_name')}}</th>
+                            <th>{{__('messages.role_name')}}</th>
+                            <th>{{__('messages.actions')}}</th>
                         </tr>
                         </tfoot>
                     </table>

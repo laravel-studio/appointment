@@ -150,11 +150,9 @@ $(function () {
         {
             service_id = $(this).val();
             ajax_url = ajax_url+'/slots/emplist/'+service_id;
-            console.log(ajax_url);
             $.get(ajax_url, function (data) {
-                console.log(data);
                 $('#emplist_label').show();
-                $('.emplist').html(data);
+                $('.emplist').html(data.html);
             });
         }
 
@@ -200,12 +198,14 @@ $(function () {
             data:$('#settings_form').serialize(),
             dataType: 'json',
                 success: function (data) {
-                   console.log(data)
+                   console.log('test load');
+                    window.location.reload();
                 },
                 error: function (data) {
                     console.log('error',data)
                 }
         });
+
 
     });
 
@@ -220,12 +220,18 @@ $(function () {
             $.get(ajax_url, function (data) {
                 $('.service-provider-list').show();
                 $('.serviceemplist').html(data.html);
+                // fSelect for appointments bookings starts
+                $(function () {
+                    window.fs_test = $('.available_customers').fSelect();
+                });
+                // fSelect for appointments bookings ends
             });
         }
     });
 
     $(document).on('click', '.service-list .emp', function (e) {
-        $("#datepicker").datepicker("destroy");
+        $("#appointment_date").datepicker("destroy");
+        var slotStartTime = $('#start_time ').val();
 
         $('.service-list .emp').removeClass('emp-selected');
         $(this).addClass('emp-selected');
@@ -249,14 +255,23 @@ $(function () {
 
         }
 
-        $("#datepicker").datepicker({
+        $("#appointment_date").datepicker({
             beforeShowDay:
                 function (dt) {
                     return [dt.getDay() != d ? false : true];
-                }
+                },
+            minDate: 0
         });
 
-        $('#init_time').on('blur', function(){
+        /**************** jQuery Time Picker for Book Appointments starts ***********/
+        $('#init_time').timepicker({
+            'minTime': slotStartTime,
+            'disableTimeRanges': [
+                ['12am', slotStartTime ]
+            ]
+        });
+        /*************** jQuery Time Picker for Book Appointments ends **************/
+        $('#init_time').on('change', function(){
             var valueStart = $("#init_time").val().split(":");
             var theHour = parseInt(valueStart[0]);
             var theMintute = parseInt(valueStart[1]);
@@ -264,15 +279,52 @@ $(function () {
             var numDuration = parseInt(valueDuration);
             var newMinutes = theMintute + numDuration;
 
-            if (newMinutes.toString().length == 1) {
-                var updatedMinute = "0" + newMinutes;
-                var newTime = theHour + ":" + updatedMinute;
+            if(newMinutes >= 60) {
+                var updatedNewMinute = (newMinutes%60);
+                var newHours = (newMinutes/60);
+                if( newHours%1 != 0 )
+                {
+                    var updatedNewHour = newHours.toString().split(".")[0];
+                    var covertedNewHour = parseInt(updatedNewHour);
+                    var timeHours = parseInt(updatedNewHour) + parseInt(theHour);
+                }
+                else if (newHours%1 == 0 )
+                {
+                    var updatedNewHour = newHours;
+                    var convertedNewHour = updatedNewHour;
+                    var timeHours = parseInt(updatedNewHour) + parseInt(theHour);
+                }
+
+                if (updatedNewMinute.toString().length == 1)
+                {
+                    var updatedMinute = "0" + updatedNewMinute;
+                    var newTime = timeHours + ":" + updatedMinute;
+                }
+                else if (updatedNewMinute.toString().length == 2)
+                {
+                    var newTime = timeHours + ":" + updatedNewMinute;
+                }
+                $('#ending_time').val(newTime);
+
             }
-            else if (newMinutes.toString().length >= 2) {
-                console.log(newMinutes);
-                var newTime = theHour + ":" + newMinutes;
+            else if (newMinutes < 60)
+            {
+                var updatedNewMinute = newMinutes;
+                var convertedNewHour = theHour;
+
+                if (updatedNewMinute.toString().length == 1)
+                {
+                    var updatedMinute = "0" + updatedNewMinute;
+                    var newTime = convertedNewHour + ":" + updatedMinute;
+                }
+                else if (updatedNewMinute.toString().length == 2)
+                {
+                    var newTime = convertedNewHour + ":" + updatedNewMinute;
+                }
+                $('#ending_time').val(newTime);
             }
-            $('#ending_time').val(newTime);
+
+
         })
 
     });
@@ -287,12 +339,7 @@ $(function () {
             ajax_url = ajax_url + '/appointments/history/' + customer_id;
             $.get(ajax_url, function (data) {
                 $('.customer_bookinglist').html(data.html);
-            });
-        }
-    });
-    /***************** Booking History AJAX Dropdown Ends **************/
-
-    /************ Datatable for customer booking history starts ********/
+        /************ Datatable for customer booking history starts ********/
         if ($('#customerbookingss').length) {
             $('#customerbookingss').DataTable({
                 'paging': true,
@@ -303,28 +350,189 @@ $(function () {
                 'autoWidth': true,
                 columnDefs: [{
                     orderable: false,
-                    className: 'reorder',
-                    // targets: 4
+                    className: 'reorder'
                 }]
             });
         }
-    /************ Datatable for customer booking history ends **********/
+        /************ Datatable for customer booking history ends **********/
+        });
+        }
+    });
+    /***************** Booking History AJAX Dropdown Ends **************/
+
+    /***************** Date range picker report details starts ***************/
+
+    $('#reportRangeDetails').daterangepicker();
+
+    /***************** Date range picker report details ends *******************/
+
+
 
     /****************** Booking Report AJAX Dropdown Starts ***********/
-    $('.report_by').on('change', function () {
-        // var customer_id = '';
+    $('#reportRangeDetails').on('change', function () {
+        var currentParameter = $(this).val();
         var ajax_url = route_url;
 
         if ($(this).val() != '') {
-            customer_id = $(this).val();
-            ajax_url = ajax_url + '/appointments/booking-reports/view-reports'; // + customer_id
+            ajax_url = ajax_url + '/appointments/booking-reports/view-reports/' + currentParameter;
             $.get(ajax_url, function (data) {
                 $('.report-details').html(data.html);
+                /************ Datatable for customer booking history starts ********/
+                if ($('#reportdetailstable').length) {
+                    $('#reportdetailstable').DataTable({
+                        'paging': true,
+                        'lengthChange': false,
+                        'searching': true,
+                        'ordering': true,
+                        'info': true,
+                        'autoWidth': true,
+                        columnDefs: [{
+                            orderable: false,
+                            className: 'reorder'
+                        }]
+                    });
+                }
+                /************ Datatable for customer booking history ends **********/
             });
         }
     });
     /***************** Booking Report AJAX Dropdown Ends **************/
 
+
+    // fSelect for appointments history starts
+    $(function () {
+        window.fs_test = $('.service_book').fSelect();
+    });
+    // fSelect for appointments history ends
+
+    // fSelect for appointments bookings starts
+    $(function () {
+        window.fs_test = $('.customer_applist').fSelect();
+    });
+    // fSelect for appointments bookings ends
+
+    // Employee Services assignments starts
+    $(function () {
+        window.fs_test = $('#service_name').fSelect();
+    });
+    // Employee Services assignments ends
+
+    // Slots Service fSelect starts
+    $(function () {
+        window.fs_test = $('#service').fSelect();
+    });
+    // Slots Service fSelect ends
+
+    // Slots Service fSelect starts
+    $(function () {
+        window.fs_test = $('#days').fSelect();
+    });
+    // Slots Service fSelect ends
+
+    // Slots timepicker for start time starts
+    $('#starttime').timepicker();
+    // Slots timepicker for start time ends
+
+    // Slots timepicker for end time starts
+    $('#endtime').timepicker();
+    // Slots timepicker for end time ends
+
+    // Employee Services edit employee dropdown fSelect starts
+    $(function () {
+        window.fs_test = $('#employees_name').fSelect();
+    });
+    // Employee Services edit employee dropdown fSelect ends
+
+
+    /*** SUMMERNOTE PLUGIN FOR ADD SERVICES TEXTAREA STARTS ***/
+    $('#service_description').summernote({
+        placeholder: 'Enter Service Description',
+        tabsize: 2,
+        height: 200
+    });
+    /**** SUMMERNOTE PLUGIN FOR ADD SERVICES TEXTAREA ENDS ****/
+
+
+    /*** SUMMERNOTE PLUGIN FOR ADD SERVICES TEXTAREA STARTS ***/
+    $('#service_terms').summernote({
+        placeholder: 'Enter Service Terms',
+        tabsize: 2,
+        height: 200
+    });
+    /**** SUMMERNOTE PLUGIN FOR ADD SERVICES TEXTAREA ENDS ****/
+
+
+    /*** SUMMERNOTE PLUGIN FOR EDIT SERVICES TEXTAREA STARTS ***/
+    $('#editServiceDescription').summernote({
+        placeholder: 'Enter Service Description',
+        tabsize: 2,
+        height: 200
+    });
+    /**** SUMMERNOTE PLUGIN FOR EDIT SERVICES TEXTAREA ENDS ****/
+
+    /*** SUMMERNOTE PLUGIN FOR ADD SERVICES TEXTAREA STARTS ***/
+    $('#editServiceTerms').summernote({
+        placeholder: 'Enter Service Terms',
+        tabsize: 2,
+        height: 200
+    });
+    /**** SUMMERNOTE PLUGIN FOR ADD SERVICES TEXTAREA ENDS ****/
+
+        /******|   Dashboard Bookings Data Tables  |**********/
+        if ($('#dashboard_bookingss').length) {
+            $('#dashboard_bookingss').DataTable({
+                'paging': true,
+                'lengthChange': false,
+                'searching': true,
+                'ordering': true,
+                'info': true,
+                'autoWidth': true,
+                columnDefs: [{
+                    orderable: false,
+                    className: 'reorder'
+                }]
+            });
+        }
+    /******|   Dashboard Bookings Data Tables Ends |*********/
+
+
+    /******|   fSelect for General Settings View   |*********/
+    $(function () {
+        window.fs_test = $('#language').fSelect();
+    });
+
+
+    $(function () {
+        window.fs_test = $('#timezone').fSelect();
+    });
+
+    $(function () {
+        window.fs_test = $('#currency').fSelect();
+    });
+
+    /** Appointment Status Change AJAX Starts */
+    $('.appointment-status').change(function () {
+        var ajax_url = route_url;
+        var appointmentId = $(this).data('appointmentid');
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: ajax_url +"/appointments/change-status/" + appointmentId,
+                method: "POST",
+                data: {
+                    cat_id: appointmentId,
+                },
+                success: function (data) {
+                    // console.log(data);
+                    window.location.reload();
+                }
+            });
+        // window.location.reload();
+    });
+    /** Appointment Status Change AJAX Ends */
 })
 /***************Delete Cinfirmation Model JS *******************/
     function deleteData(route,id)

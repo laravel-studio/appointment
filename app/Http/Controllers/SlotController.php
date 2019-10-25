@@ -51,14 +51,14 @@ class SlotController extends Controller
             'starttime' => 'required',
             'endtime' => 'required',
         ]);
-
-        Slot::create([
-            'employee_service_id' => $request->service,
-            'days' => $request->days,
-            'start_time' => $request->starttime,
-            'end_time' => $request->endtime
-        ]);
-
+        foreach($request->days as $day) {
+            Slot::create([
+                'employee_service_id' => $request->employee_service_id,
+                'days' => $day,
+                'start_time' => $request->starttime,
+                'end_time' => $request->endtime
+            ]);
+        }
 
         return redirect('/slots')->with('success', 'Slot created successfully');
     }
@@ -87,7 +87,6 @@ class SlotController extends Controller
         $days = ['Monday', 'Tuesday', 'Wednesday', 'Thrusday', 'Friday', 'Saturday', 'Sunday'];
 
         $slot = Slot::with(['employeeservices.users', 'employeeservices.services'])->findOrFail($id);
-        // dd($slot);
         return view('slot.edit', compact('slot', 'employees', 'services', 'days'));
     }
 
@@ -156,12 +155,9 @@ class SlotController extends Controller
         if ($request->ajax())
         {
             $users= User::getUserDetails($id);
-            $str='';
-            foreach($users as $user)
-            {
-                $str.='<input type="radio" name="employee_service_id" value="'.$user->service_id.'">'.$user->name.'<br>';
-            }
-            return ($str);
+
+            $returnHTML = view('slot.slotemplist')->with('users', $users)->render();
+            return response()->json(array('success' => true, 'html' => $returnHTML));
             die();
         }
         return response(['status' => false, 'code' => 403,], 403);

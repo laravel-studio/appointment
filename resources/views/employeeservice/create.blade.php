@@ -5,15 +5,15 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
         <h1>
-            {{__('Assign Service')}}
+            {{__('messages.assign_service')}}
             <small>
-                {{__('assign service to employees')}}
+                {{__('messages.assign_service_to_employees')}}
             </small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="{{url('/')}}"><i class="fa fa-dashboard"></i> {{__('Home')}}</a></li>
-            <li><a href="{{url('/')}}/employees/services">{{__('Employeeservices')}}</a></li>
-            <li class="active">{{__('Assign Service')}}</li>
+            <li><a href="{{url('/')}}"><i class="fa fa-dashboard"></i> {{__('messages.home')}}</a></li>
+            <li><a href="{{url('/')}}/employees/services">{{__('messages.employeeservices')}}</a></li>
+            <li class="active">{{__('messages.assign_service')}}</li>
         </ol>
         </section>
         <section class="content">
@@ -29,7 +29,9 @@
                         <form action="/employees/services/store" method="POST">
                             @csrf
                             <div class="form-group col-md-12">
-                                <label for="service_name">{{__('Service Name')}}</label>
+                                <label for="service_name">{{__('messages.service_name')}}</label>
+                            </div>
+                            <div class="form-group col-md-12">
                                 <select name="service_id" class="form-control" id="service_name">
                                     <option value="">Select Service</option>
                                     @foreach($services as $service)
@@ -43,8 +45,10 @@
                                 @enderror
                             </div>
                             <div class="form-group col-md-12">
-                                <label for="employees_name">{{__('Employee(s):')}}</label>
-                                <select id="employees_name" name="employee_id[]" class="form-control employees_dd" multiple="multiple">
+                                <label for="employees_name">{{__('messages.employee')}}</label>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <select id="employees_name" name="employee_id" class="form-control employees_dd">
                                     <option value="">Select Employees</option>
                                     @foreach($employees as $employee)
                                         <option value="{{ $employee->id }}">{{ $employee->name }}</option>
@@ -57,8 +61,8 @@
                                 @enderror
                             </div>
                             <div class="form-group col-md-12">
-                                <label id="service_price">{{__('Price:')}}</label>
-                                <input class="form-control" id="service_price" name="price">
+                                <label id="service_price">{{__('messages.price')}}</label>
+                                <input class="form-control" id="service_price" name="price" style="width:200px;">
                                 @error('price')
                                     <span class="invalid-feedback text-danger" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -66,7 +70,7 @@
                                 @enderror
                             </div>
                             <div class="form-group col-md-12">
-                                <button type="submit" name="submit" class="btn btn-primary">{{__('Assign Service')}}</button>
+                                <button type="submit" name="submit" class="btn btn-primary">{{__('messages.assign_service')}}</button>
                             </div>
                         </form>
                     </div>

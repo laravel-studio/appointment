@@ -10,4 +10,8 @@ class Service extends Model
 	use SoftDeletes;
     protected $fillable = ['title', 'duration','description','terms'];
 
+    public function editPath()
+    {
+        return "services/{$this->id}";
+    }
 }

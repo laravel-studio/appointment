@@ -1,5 +1,17 @@
 <?php
 
+// locale setup starts
+$lang_locale = 'en';
+$lang = App\Setting::select('option_value')->where('option_key', 'language')->get();
+$lang_val = $lang->toArray();
+if (count($lang_val) > 0) {
+    $lang_locale = $lang_val[0]['option_value'];
+}
+App::setLocale($lang_locale);
+
+
+// locale setup ends
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,12 +26,18 @@
 Route::get('/', function () {
     return view('welcome');
 });
-
+Route::get('users/verifyuser/{id}','UserController@verifyuser');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
+
+/*******************|-------------------------------|********************/
+/*******************| ROUTE MIDDLEWARE GROUP STARTS |********************/
+/*******************|-------------------------------|********************/
+Route::group(['middleware' => 'auth'], function () {
+
 
 Route::get('/dashboard', 'HomeController@index')->name('dashboard');
 // User List
@@ -84,21 +102,21 @@ Route::resource('services','ServiceController');
 
 /******************* EmployeeServices Route Starts *****************/
 
-Route::get('/employees/services','EmployeeserviceController@index')->middleware('auth');
-Route::get('/employees/services/assign','EmployeeserviceController@create')->middleware('auth');
-Route::post('/employees/services/store','EmployeeserviceController@store')->middleware('auth');
-Route::get('/employees/services/edit/{employeeservice}','EmployeeserviceController@edit')->middleware('auth');
-Route::patch('/employees/services/update/{employeeservice}','EmployeeserviceController@update')->middleware('auth');
+Route::get('/employees/services','EmployeeserviceController@index');
+Route::get('employees/services/assign','EmployeeserviceController@create');
+Route::post('employees/services/store','EmployeeserviceController@store');
+Route::get('/employees/services/edit/{employeeservice}','EmployeeserviceController@edit');
+Route::patch('/employees/services/update/{employeeservice}','EmployeeserviceController@update');
 Route::resource('employeeservices', 'EmployeeserviceController');
 /******************* EmployeeServices Route Ends ******************/
 
 
 /*************************** SLOT ROUTES STARTS ************************/
-Route::get('/slots','SlotController@index')->middleware('auth');
-Route::get('/slots/create','SlotController@create')->middleware('auth');
-Route::get('/slots/emplist/{id}','SlotController@emplist')->middleware('auth');
-Route::post('/slots/create','SlotController@store')->middleware('auth');
-Route::patch('/slots/{slot}/update', 'SlotController@update')->middleware('auth');
+Route::get('/slots','SlotController@index');
+Route::get('/slots/create','SlotController@create');
+Route::get('/slots/emplist/{id}','SlotController@emplist');
+Route::post('/slots/create','SlotController@store');
+Route::patch('/slots/{slot}/update', 'SlotController@update');
 Route::resource('slots','SlotController');
 /*************************** SLOT ROUTES ENDS **************************/
 /*******************Settings***********************/
@@ -116,5 +134,30 @@ Route::get('/service/emplist/{id}','AppointmentController@emplist');
 Route::get('/appointments/booking-history', 'AppointmentController@history');
 Route::get('/appointments/history/{customer}', 'AppointmentController@customerBookingHistory');
 Route::get('/appointments/booking-reports', 'AppointmentController@reports');
-Route::get('/appointments/booking-reports/view-reports', 'AppointmentController@reportDetails');
+Route::get('/appointments/booking-reports/view-reports/{param}', 'AppointmentController@reportDetails');
 /*************************** Appointments Routes Ends ******************/
+
+
+/*********************** Download Routes Strats ********************/
+
+    // User export routes
+    Route::get('/users/export', 'UserController@export');
+
+    // Role export routes
+    Route::get('/roles/exportexcel', 'RoleController@exportexcel');
+
+    // Employees export routes
+    Route::get('/employees/export', 'EmployeeController@exportExcel');
+
+    // Services export routes
+    // Route::get('/services/export', 'ServiceController@exportExcel');
+    Route::get('/services/exportexcel', 'ServiceController@exportExcel');
+
+/*********************** Download Routes Ends **********************/
+
+    /** Approve Appointment Status Route */
+    Route::post('/appointments/change-status/{bookingid}', 'AppointmentController@updateStatus');
+});
+/*******************|-----------------------------|********************/
+/*******************| ROUTE MIDDLEWARE GROUP ENDS |********************/
+/*******************|-----------------------------|********************/

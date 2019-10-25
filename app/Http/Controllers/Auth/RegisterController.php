@@ -10,7 +10,10 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Events\Registered;
-
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Mail\Message;
+use App\Mail\RegistrationMail;
 class RegisterController extends Controller
 {
     /*
@@ -67,9 +70,11 @@ class RegisterController extends Controller
 
     public function register(Request $request)
     {
+       $name = $request->name;
         $this->validator($request->all())->validate();
 
         event(new Registered($user = $this->create($request->all())));
+        Mail::to($request->email)->send(new RegistrationMail($user));
         if(!$request->has('type'))
         {
             return view('layouts.beforelogin.successfulregister');
@@ -86,7 +91,7 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'type'=> $type,
-            'status'=>1
+            'status'=>0
         ]);       
     }
 }

@@ -22,11 +22,6 @@ class AppointmentController extends Controller
      */
     public function index()
     {
-        // $test_employees = DB::table('appointments')->distinct('customer_id')->pluck('customer_id');
-        //     ->join('users', 'appointments.customer_id', '=', 'users.id')
-        //     ->toSql();
-        // $test_employees = DB::table('appointments')->distinct('customer_id');
-        // dd($test_employees);
         $appointments = Appointment::with('slots.employeeservices.services', 'users', 'slots.employeeservices.users')->get();
         return view('appointment.lists', compact('appointments'));
     }
@@ -157,7 +152,7 @@ class AppointmentController extends Controller
     public function emplist($id, Request $request)
     {
         if ($request->ajax()) {
-            $users = User::getUserDetails($id);
+            $users = User::getUserSlotDetails($id);
             $customers = User::where('type', 3)->get();
             $returnHTML = view('appointment.emplist')->with('users', $users)->with('customers', $customers)->render();
             return response()->json(array('success' => true, 'html' => $returnHTML));
@@ -177,7 +172,7 @@ class AppointmentController extends Controller
     public function customerBookingHistory(Request $request, $id)
     {
         if ($request->ajax()) {
-            $users = User::getUserDetails($id);
+            $users = User::getUserSlotDetails($id);
             $customers = User::where('type', 3)->get();
             $booked_customers = Appointment::where('customer_id', $id)->with(['slots.employeeservices.services', 'slots.employeeservices.users', 'users', 'booker'])->get();
             $now = new DateTime();
@@ -192,22 +187,50 @@ class AppointmentController extends Controller
     {
         $attributes = array(
             "Date Wise" => "date",
-            "Customer Wise" => "eustomer",
+            "Customer Wise" => "customer",
             "Employee Wise" => "employee",
             "Quaterly" => "quaterly",
             "Monthly" => "monthly",
             "Weekly" => "weekly"
         );
         return view('appointment.reports.reportindex', compact('attributes'));
-    }
+    } // end of function
 
-    public function reportDetails(Request $request)
+    public function reportDetails(Request $request, $param)
     {
-        if ($request->ajax()) {
-            $returnHTML = view('appointment.reports.reportdetails');
+        if ($request->ajax())
+        {
+            $range = json_decode($param, true);
+            $starting_date = $range['start'];
+            $ending_date = $range['end'];
+
+            $customers = User::where('type', 3)->get();
+            $appointments = Appointment::whereBetween('booking_date', [$starting_date, $ending_date])
+                            ->with(['slots.employeeservices.services', 'slots.employeeservices.users', 'users', 'booker'])
+                            ->get();
+
+            $returnHTML = view('appointment.reports.reportdetails')->with('customers', $customers)->with('appointments', $appointments)->render();
             return response()->json(array('success' => true, 'html' => $returnHTML));
             die();
         }
         return response(['status' => false, 'code' => 403,], 403);
-    }
+    } // end of function
+
+    public function updateStatus($id)
+    {
+        $appointmentStatus = Appointment::findOrFail($id);
+        if($appointmentStatus->status == 0)
+        {
+            $appointmentStatus->update(['status' => 1]);
+        }
+        else if($appointmentStatus->status == 1)
+        {
+            $appointmentStatus->update(['status' => 0]);
+        }
+        else
+        {
+            return redirect('/appointments')->with('error','Invalid Operation');
+        }
+        return redirect('/appointments');
+    } // end of function
 }

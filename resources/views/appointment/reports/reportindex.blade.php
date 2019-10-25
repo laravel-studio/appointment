@@ -5,44 +5,40 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
         <h1>
-            {{ __('Reports') }}
+            {{ __('messages.reports') }}
             <small>
-                {{ __('view reports by different aspects.') }}
+                {{ __('messages.view_reports_by_diffrent_aspects') }}
             </small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> {{ __('Home') }}</a></li>
-            <li><a href="{{url('/')}}/appointments"> {{ __('Appointments') }}</a></li>
-            <li class="active">{{ __('Reports') }}</li>
+            <li><a href="#"><i class="fa fa-dashboard"></i> {{ __('messages.home') }}</a></li>
+            <li><a href="{{url('/')}}/appointments"> {{ __('messages.appointments') }}</a></li>
+            <li class="active">{{ __('messages.reports') }}</li>
         </ol>
         </section>
         <section class="content">
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="box">
-                        <div class="box-header">
-                            <div class="row col-md-12">
-                                <div class="form-group col-md-12">
-                                    <label>View Reports By:</label>
-                                    <select name="report_by" id="report_by" class="form-control">
-                                        <option value="">Select</option>
-                                        @foreach($attributes as $key=>$value)
-                                            <option value="{{$value}}">{{$key}}</option>
-                                        @endforeach
-                                    </select>
+                    <div class="col-xs-12">
+                        <div class="box">
+                            <div class="box-header">
+
+                            </div>
+                            <div class="box-body">
+                                <div class="row col-md-12">
+                                    <div class="form-group col-md-12">
+                                        <label for="reportRangeDetails">{{__('messages.select_range')}}</label><br>
+                                        <input type="text" id="reportRangeDetails" name="reportRangeDetails" class="form-control">
+                                    </div>
                                 </div>
+                                <div class="report-details"></div>
                             </div>
                         </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
-                            <div class="report-details"></div>
-                        </div>
-                        <!-- /.box-body -->
                     </div>
                 <!-- /.box -->
                 </div>
-                <!-- /.col -->
             </div>
+                <!-- /.col -->
             <!-- /.row -->
         </section>
     </div>

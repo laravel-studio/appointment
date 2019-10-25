@@ -5,16 +5,18 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
         <h1>
-            {{__('Book New Appointment')}}
+            {{__('messages.book_appointment')}}
             <small>
-                {{__('book a new appointment')}}
+                {{__('messages.book_new_appointment')}}
             </small>
         </h1>
+        @if(Auth::user()->type==1 || Auth::user()->type==2)
         <ol class="breadcrumb">
-            <li><a href="{{url('/')}}"><i class="fa fa-dashboard"></i> {{__('Home')}}</a></li>
-            <li><a href="{{url('/')}}/appointments">{{__('Appointments')}}</a></li>
-            <li class="active">{{__('Book Appointment')}}</li>
+            <li><a href="{{url('/')}}"><i class="fa fa-dashboard"></i> {{__('messages.home')}}</a></li>
+            <li><a href="{{url('/')}}/appointments">{{__('messages.appointments')}}</a></li>
+            <li class="active">{{__('messages.book_appointment')}}</li>
         </ol>
+        @endif
         </section>
         <section class="content">
             <div class="row">
@@ -26,8 +28,10 @@
                     <!-- /.box-header -->
                     <div class="box-body">
                         <div class="form-group col-md-12">
-                            <label>{{__('Select Service:')}}</label>
-                            <select class="form-control service_book" name="service">
+                            <label for="service">{{__('messages.select_service')}}</label>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <select class="form-control service_book" name="service" id="service">
                                 <option>Select Service</option>
                                 @foreach($services as $service)
                                     <option value="{{$service->id}}">{{$service->title}}</option>
@@ -35,24 +39,10 @@
                             </select>
                         </div>
                         <div class="form-group col-md-12 service-provider-list" style="display:none">
-                            <label>{{__('Providers:')}}</label>
+                            <label>{{__('messages.providers')}}</label>
                         </div>
 
                         <div class="form-group serviceemplist"></div>
-                        {{-- <div class="emp-form">
-                            <div class="form-group col-md-12">
-                                <label for="appointment_date">{{__('Date:')}}</label>
-                                <input type="date" name="appointment_date" class="form-control" id="appointment_date">
-                            </div>
-                            <div class="form-group col-md-12">
-                                <label>{{__('Comments:')}}</label>
-                                <textarea class="form-control" name="comments"></textarea>
-                            </div>
-                            <div class="form-group col-md-12">
-                                <button type="submit" name="submit" class="btn btn-primary">Book Appointment</button>
-                            </div>
-
-                        </div> --}}
                     </div>
                     <!-- /.box-body -->
                 </div>

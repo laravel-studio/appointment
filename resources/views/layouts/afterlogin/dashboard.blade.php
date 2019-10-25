@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | Data Tables</title>
+  <title>{{__("Appointment Manager")}}</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -21,6 +21,10 @@
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="{{ asset('css/admin/skins/_all-skins.min.css') }}">
   <link rel="stylesheet" href="{{ asset('css/jquery-ui.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/jquery.ui.timepicker.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/jquery-ui-1.10.0.custom.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/jquery.comiseo.daterangepicker.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/summernote.css') }}">
   <link rel="stylesheet" href="{{ asset('css/admin/main.css') }}">
   <!-- Google Font -->
   <link rel="stylesheet"
@@ -244,8 +248,6 @@
 </script>
 <!-- jQuery 3 -->
 <script src="{{ asset('js/admin/jquery.min.js') }}"></script>
-<!-- Bootstrap 3.3.7 -->
-<script src="{{ asset('js/admin/bootstrap.min.js') }}"></script>
 <!-- DataTables -->
 <script src="{{ asset('js/admin/datatables.net/js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('js/admin/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
@@ -253,8 +255,59 @@
 <script src="{{ asset('js/admin/adminlte.min.js') }}"></script>
 <script src="{{ asset('js/admin/fSelect.js') }}"></script>
 <script src="{{ asset('js/admin/jquery-ui.js') }}"></script>
-
+<script src="{{ asset('js/admin/jquery.ui.core.min.js') }}"></script>
+<script src="{{ asset('js/admin/jquery.ui.timepicker.js') }}"></script>
+<script src="{{ asset('js/admin/jquery.comiseo.daterangepicker.js') }}"></script>
+<script src="{{ asset('js/admin/moment.js') }}"></script>
+<script src="{{ asset('js/admin/summernote.js') }}"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="{{ asset('js/admin/bootstrap.min.js') }}"></script>
+<!-- Summernote lang JS files -->
+<script src="{{asset('lang/summernote-ar-AR.js')}}"></script>
+<script src="{{asset('lang/summernote-bg-BG.js')}}"></script>
+<script src="{{asset('lang/summernote-ca-ES.js')}}"></script>
+<script src="{{asset('lang/summernote-cs-CZ.js')}}"></script>
+<script src="{{asset('lang/summernote-da-DK.js')}}"></script>
+<script src="{{asset('lang/summernote-de-DE.js')}}"></script>
+<script src="{{asset('lang/summernote-el-GR.js')}}"></script>
+<script src="{{asset('lang/summernote-es-ES.js')}}"></script>
+<script src="{{asset('lang/summernote-es-EU.js')}}"></script>
+<script src="{{asset('lang/summernote-fa-IR.js')}}"></script>
+<script src="{{asset('lang/summernote-fi-FI.js')}}"></script>
+<script src="{{asset('lang/summernote-fr-FR.js')}}"></script>
+<script src="{{asset('lang/summernote-gl-ES.js')}}"></script>
+<script src="{{asset('lang/summernote-he-IL.js')}}"></script>
+<script src="{{asset('lang/summernote-hr-HR.js')}}"></script>
+<script src="{{asset('lang/summernote-hu-HU.js')}}"></script>
+<script src="{{asset('lang/summernote-id-ID.js')}}"></script>
+<script src="{{asset('lang/summernote-it-IT.js')}}"></script>
+<script src="{{asset('lang/summernote-ja-JP.js')}}"></script>
+<script src="{{asset('lang/summernote-ko-KR.js')}}"></script>
+<script src="{{asset('lang/summernote-lt-LT.js')}}"></script>
+<script src="{{asset('lang/summernote-lt-LV.js')}}"></script>
+<script src="{{asset('lang/summernote-mn-MN.js')}}"></script>
+<script src="{{asset('lang/summernote-nb-NO.js')}}"></script>
+<script src="{{asset('lang/summernote-nl-NL.js')}}"></script>
+<script src="{{asset('lang/summernote-pl-PL.js')}}"></script>
+<script src="{{asset('lang/summernote-pt-BR.js')}}"></script>
+<script src="{{asset('lang/summernote-pt-PT.js')}}"></script>
+<script src="{{asset('lang/summernote-ro-RO.js')}}"></script>
+<script src="{{asset('lang/summernote-ru-RU.js')}}"></script>
+<script src="{{asset('lang/summernote-sk-SK.js')}}"></script>
+<script src="{{asset('lang/summernote-sl-SI.js')}}"></script>
+<script src="{{asset('lang/summernote-sr-RS.js')}}"></script>
+<script src="{{asset('lang/summernote-sr-RS-Latin.js')}}"></script>
+<script src="{{asset('lang/summernote-sv-SE.js')}}"></script>
+<script src="{{asset('lang/summernote-ta-IN.js')}}"></script>
+<script src="{{asset('lang/summernote-th-TH.js')}}"></script>
+<script src="{{asset('lang/summernote-tr-TR.js')}}"></script>
+<script src="{{asset('lang/summernote-uk-UA.js')}}"></script>
+<script src="{{asset('lang/summernote-uz-UZ.js')}}"></script>
+<script src="{{asset('lang/summernote-vi-VN.js')}}"></script>
+<script src="{{asset('lang/summernote-zh-CN.js')}}"></script>
+<script src="{{asset('lang/summernote-zh-TW.js')}}"></script>
 <!-- AdminLTE for demo purposes -->
+<script src="{{ asset('js/admin/jquery.canvasjs.min.js') }}"></script>
 <script src="{{ asset('js/admin/custom.js') }}"></script>
 <!-- page script -->
 <script>

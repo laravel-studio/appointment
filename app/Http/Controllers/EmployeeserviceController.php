@@ -55,20 +55,17 @@ class EmployeeserviceController extends Controller
      */
     public function store(Request $request)
     {
-        request()->validate([
-            'service_id' => 'required',
+        $attributes = request()->validate([
+            'service_id' => 'required|unique_with:employeeservices,employee_id',
             'employee_id' => 'required',
             'price' => 'required',
         ]);
 
-        foreach($request->employee_id as $value)
-        {
-            Employeeservice::create([
-                'service_id' => $request->service_id,
-                'employee_id' => $value,
-                'price' => $request->price
+        Employeeservice::create([
+                'service_id' => $attributes['service_id'],
+                'employee_id' => $attributes['employee_id'],
+                'price' => $attributes['price']
             ]);
-        }
 
         return redirect('employees/services')->with('success', 'Service assigned successfully');
     }
@@ -115,9 +112,15 @@ class EmployeeserviceController extends Controller
     {
         $employeeservice = Employeeservice::findOrFail($id);
 
-        $employeeservice->service_id = $request->service_id;
-        $employeeservice->employee_id = $request->employee_id;
-        $employeeservice->price = $request->price;
+        $attributes = request()->validate([
+            'service_id' => 'required|unique_with:employeeservices,employee_id,ignore:'.$employeeservice->id,
+            'employee_id' => 'required',
+            'price' => 'required'
+        ]);
+
+        $employeeservice->service_id = $attributes['service_id'];
+        $employeeservice->employee_id = $attributes['employee_id'];
+        $employeeservice->price = $attributes['price'];
 
         $employeeservice->save();
 
@@ -134,7 +137,7 @@ class EmployeeserviceController extends Controller
     public function destroy($id)
     {
         Employeeservice::findOrFail($id)->delete();
-        return redirect('employees/services')->with('warning','Product deleted successfully');
+        return redirect('employees/services')->with('error','Product deleted successfully');
     }
     public function getAll()
     {
@@ -142,7 +145,7 @@ class EmployeeserviceController extends Controller
         return response(['status' => true, 'code' => 201, 'data'=> $services], 201);
     }//end of function
     public function getEmployeesByService(Request $request)
-    {   
+    {
         $employee_services=Employeeservice::with(['users','services'])->where('service_id',$request->id)->get();
         $response=array();
         $i=0;

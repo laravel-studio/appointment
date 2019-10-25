@@ -1,10 +1,10 @@
  <header class="main-header">
     <!-- Logo -->
-    <a href="../../index2.html" class="logo">
+    <a href="{{url('/')}}/dashboard" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini">Appointment Management</span>
+      <span class="logo-mini">{{__('messages.appointment')}}</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg">Appointment Management</span>
+      <span class="logo-lg">{{__('messages.appointment')}}</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -17,13 +17,20 @@
       </a>
 
       <div class="navbar-custom-menu">
-        <ul class="nav navbar-nav">             
-  
+        <ul class="nav navbar-nav">
+
+        <li class="messages-menu" style="padding-top:3px;" >
+            <a href="{{url('/')}}/docs" target="_blank" class="dropdown-toggle" data-toggle="dropdown" onclick="location.href='/docs'">
+                <i class="fa fa-book"><span style="padding-left:5px;">{{__('User Manual')}}</span></i>
+            </a>
+        </li>
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               @if(Auth::user())
-              <img src="{{ asset('images/'.Auth::user()->profileimage) }}" class="user-image" alt="User Image">
+                @if((Auth::user()->profileimage)!=''? $img_src=asset('images/'.Auth::user()->profileimage) : $img_src=asset('images/user-common.png'))
+              <img src="{{ $img_src }}" class="user-image" alt="User Image">
+                @endif
               @endif
                @if(Auth::user())
 
@@ -35,11 +42,13 @@
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-                <img src="{{ asset('img/user2-160x160.jpg') }}" class="img-circle" alt="User Image">
+            @if((Auth::user()->profileimage)!=''? $img_src=asset('images/'.Auth::user()->profileimage) : $img_src=asset('images/user-common.png'))
+                <img src="{{ $img_src }}" class="img-circle" alt="User Image">
+            @endif
                  @if(Auth::user())
                 <p>
                   {{ Auth::user()->name }}
-                  
+
                 </p>
                  @endif
               </li>
@@ -58,7 +67,7 @@
             </ul>
           </li>
           <!-- Control Sidebar Toggle Button -->
-          
+
         </ul>
       </div>
     </nav>

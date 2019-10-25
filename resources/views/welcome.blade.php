@@ -61,6 +61,23 @@
             .m-b-md {
                 margin-bottom: 30px;
             }
+            .button-view {
+                background-color: #4CAF50 !important; /* Green */
+                border: none !important;
+                color: white !important;
+                padding: 15px 32px !important;
+                text-align: center !important;
+                text-decoration: none !important;
+                display: inline-block !important;
+                font-size: 16px !important;
+                padding-top: 10px !important;
+                padding-bottom: 10px !important;
+                font-size: large !important;
+                border-radius: 10px !important;
+            }
+            .button-view:hover {
+                background-color: #a9db4d !important;
+            }
         </style>
     </head>
     <body>
@@ -81,17 +98,11 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    {{__("Appointment Management System")}}
                 </div>
 
                 <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                    <a class="button-view" href="{{url('/')}}/dashboard">{{__("Manage Appointments Here")}}</a>
                 </div>
             </div>
         </div>

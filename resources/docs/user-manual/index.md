@@ -1,0 +1,16 @@
+- ## Get Started
+    - [Overview](/{{route}}/{{version}}/overview)
+- ## Modules
+    - [Roles](/{{route}}/{{version}}/roles)
+    - [Employees](/{{route}}/{{version}}/employees)
+    - [Customers](/{{route}}/{{version}}/customers)
+    - [Services](/{{route}}/{{version}}/services)
+    - [Employee Services](/{{route}}/{{version}}/employeeservices)
+    - [Booking Calender](/{{route}}/{{version}}/bookingcalender)
+    - [Slots](/{{route}}/{{version}}/slots)
+    - [Appointments](/{{route}}/{{version}}/appointments)
+    - [Settings](/{{route}}/{{version}}/settings)
+- ## Usage
+    - [Registration](/{{route}}/{{version}}/registration)
+    - [Login](/{{route}}/{{version}}/login)
+    - [Dashboard](/{{route}}/{{version}}/dashboard)

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\EmployeesExport;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use \Illuminate\Support\Facades\Hash;
@@ -124,5 +126,13 @@ class EmployeeController extends Controller
     {
         User::findOrFail($id)->delete();
         return redirect('employees')->with('error', 'Employee trashed successfully');
+    }
+
+    /**
+     * Export as excel for employees
+     */
+    public function exportExcel()
+    {
+        return Excel::download(new EmployeesExport, 'employees.xlsx');
     }
 }

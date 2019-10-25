@@ -22,13 +22,13 @@ class ServiceController extends Controller
             'duration'      =>  'required|numeric',
             'description'   =>  'required',
             'terms'         =>  'required'
-        ]);    
+        ]);
         Service::create($request->all());
-    
+
         return redirect()->route('services.index')
                         ->with('success','Service created successfully.');
     }
-    
+
     public function edit(Service $service)
     {
         return view('services.edit',compact('service'));
@@ -42,11 +42,11 @@ class ServiceController extends Controller
             'description'   =>  'required',
             'terms'         =>  'required'
         ]);
-  
+
         $service->update($request->all());
-  
+
         return redirect()->route('services.index')
-                        ->with('success','service updated successfully');
+                        ->with('info','Service updated successfully');
     }
 
     public function destroy($id)
@@ -54,7 +54,14 @@ class ServiceController extends Controller
         Service::findOrFail($id)->delete();
         // $user->delete();
         return redirect()->route('services.index')
-                        ->with('success','Product deleted successfully');
+                        ->with('error','Service deleted successfully');
     }
-    
+
+    public function show(Service $service)
+    {
+
+        return view('services.index', compact('service'));
+    }
+
+
 }

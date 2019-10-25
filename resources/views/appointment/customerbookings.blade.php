@@ -1,13 +1,13 @@
 <form action="/appointments/download/" method="POST">
     <table  id="customerbookingss" class="table table-striped table-bordered table-hover table-condensed">
         <thead>
-            <th>{{__('Services')}}</th>
-            <th>{{__('Employee')}}</th>
-            <th>{{__('Price')}}</th>
-            <th>{{__('Date')}}</th>
-            <th>{{__('Start Time')}}</th>
-            <th>{{__('Duration')}}</th>
-            <th>{{__('Booked By')}}</th>
+            <th>{{__('messages.services')}}</th>
+            <th>{{__('messages.employee')}}</th>
+            <th>{{__('messages.price')}}</th>
+            <th>{{__('messages.date')}}</th>
+            <th>{{__('messages.start_time')}}</th>
+            <th>{{__('messages.duration')}}</th>
+            <th>{{__('messages.booked_by')}}</th>
         </thead>
         <tbody>
             @forelse($booked_customers as $bookings_history)
@@ -24,18 +24,18 @@
                     @endif
                 @empty
                         <tr>
-                            <td colspan="7">{{__('No Bookings found.')}}</td>
+                            <td colspan="7">{{__('messages.no_bookings_found')}}</td>
                         </tr>
             @endforelse
         </tbody>
         <tfoot>
-            <th>{{__('Services')}}</th>
-            <th>{{__('Employee')}}</th>
-            <th>{{__('Price')}}</th>
-            <th>{{__('Date')}}</th>
-            <th>{{__('Start Time')}}</th>
-            <th>{{__('Duration')}}</th>
-            <th>{{__('Booked By')}}</th>
+            <th>{{__('messages.services')}}</th>
+            <th>{{__('messages.employee')}}</th>
+            <th>{{__('messages.price')}}</th>
+            <th>{{__('messages.date')}}</th>
+            <th>{{__('messages.start_time')}}</th>
+            <th>{{__('messages.duration')}}</th>
+            <th>{{__('messages.booked_by')}}</th>
         </tfoot>
     </table>
 </form>
