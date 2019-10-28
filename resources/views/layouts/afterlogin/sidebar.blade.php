@@ -93,6 +93,7 @@
           </a>
         </li>
 
+        @if(Auth::user()->type==config('global.user_type.superadmin') || Auth::user()->type==config('global.user_type.employee'))
         <li class="treeview">
           <a href="#">
             <i class="fa fa-clock-o"></i> <span>{{__('messages.booking_slots')}}</span>
@@ -102,9 +103,12 @@
           </a>
           <ul class="treeview-menu">
           <li><a href="{{url('/')}}/slots"><i class="fa fa-list"></i> {{__('messages.all_slots')}}</a></li>
+            @if(Auth::user()->type==config('global.user_type.superadmin'))
             <li><a href="{{url('/')}}/slots/create"><i class="fa fa-plus-square"></i> {{__('messages.add_new')}}</a></li>
+            @endif
           </ul>
         </li>
+        @endif
 
         <li class="treeview">
           <a href="#">
@@ -121,6 +125,7 @@
           </ul>
         </li>
 
+        @if(Auth::user()->type==config('global.user_type.superadmin'))
         <li class="treeview">
           <a href="#">
             <i class="fa fa-cog"></i> <span>{{__('messages.settings') }}</span>
@@ -132,6 +137,7 @@
           <li><a href="{{url('/')}}/settings/"><i class="fa fa-cogs"></i>{{ __('messages.general_settings') }} </a></li>
           </ul>
         </li>
+        @endif
 
         <li class="treeview">
             <a href="#">

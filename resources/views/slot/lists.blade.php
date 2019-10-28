@@ -20,9 +20,11 @@
                 <div class="col-xs-12">
                     @include('slot.flash-message')
                 <div class="box">
-                    <div class="box-header">
+                @if(Auth::user()->type==config('global.user_type.superadmin'))
+                <div class="box-header">
                     <span style="float: right;"><a href="{{url('/')}}/slots/create" class="btn btn-info">{{__('messages.add_slot')}}</a></span>
                 </div>
+                @endif
                     <!-- /.box-header -->
                     <div class="box-body">
                     <table id="slotlist" class="table table-bordered table-striped">
@@ -47,8 +49,12 @@
                                     <td>{{ $slot->start_time }}</td>
                                     <td>{{ $slot->end_time }}</td>
                                     <td>
+                                        @if(Auth::user()->type==config('global.user_type.superadmin'))
                                         <a href="{{url('/')}}/slots/{{$slot->id}}/edit" style="padding-right: 10px;"><i class="fa fa-pencil-square-o" aria-hidden="true"><span style="padding-left: 3px;">{{__('messages.edit')}}</span></i></a>
                                         {{-- <a href="" data-toggle="modal" onclick="deleteData('slots',{{$slot->id}})" style="padding-right: 10px;"><i class="fa fa-trash-o" aria-hidden="true"><span style="padding-left: 3px;">{{__('messages.delete')}}</span></i></a> --}}
+                                        @else 
+                                        <span class="label label-warning text-lg">{{__("Admin Only")}}</span>
+                                        @endif
                                     </td>
                                 </tr>
                                 @empty

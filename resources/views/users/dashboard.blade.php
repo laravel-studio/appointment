@@ -104,6 +104,7 @@
           <!-- Custom tabs (Charts with tabs)-->
           <div class="nav-tabs-custom">
             <!-- Tabs within a box -->
+            @if(Auth::user()->type==config('global.user_type.superadmin'))
             <ul class="nav nav-tabs pull-right">
               <li class="pull-left header"><i class="fa fa-list-alt"></i> {{__('messages.bookings')}}</li>
             </ul>
@@ -111,6 +112,14 @@
               <!-- Morris chart - Sales -->
                 <div class="chart" id="revenue_chart" style="position: relative; height: 350px;">{!! $chart->html() !!}</div>
             </div>
+            @else
+              <ul class="nav nav-tabs pull-right">
+                <li class="pull-left header"><i class="fa fa-list-alt"></i> {{__('Calender Booking')}}</li>
+              </ul>
+              <div class="tab-content" style="height: 350px;">
+                  <a href="{{url('/')}}/booking/calender" class="btn btn-default" style="position: relative;top: 290px;float: right;">{{__('View Calender')}}</a>
+              </div>
+            @endif
           </div>
           <!-- /.nav-tabs-custom -->
 
@@ -159,9 +168,14 @@
                         @endif
                         <!-- /.box-body -->
                         <div class="box-footer clearfix">
-                            <a href="{{url('/')}}/appointments/book" class="btn btn-sm btn-info btn-flat pull-left">{{__('messages.book_appointment')}}</a>
+                            @if(Auth::user()->type==config('global.user_type.customer'))
+                            <div style="height:216px;">
+                              <a href="{{url('/')}}/appointments/book" class="btn btn-sm btn-info btn-flat pull-left" style="position: relative;top:185px;float: right;">{{__('messages.book_appointment')}}</a>
+                            </div>
+                            @endif
                             @if(Auth::user()->type==1)
-                            <a href="{{url('/')}}/appointments" class="btn btn-sm btn-default btn-flat pull-right">{{__('messages.view_all_bookings')}}</a>
+                              <a href="{{url('/')}}/appointments/book" class="btn btn-sm btn-info btn-flat pull-left">{{__('messages.book_appointment')}}</a>
+                              <a href="{{url('/')}}/appointments" class="btn btn-sm btn-default btn-flat pull-right">{{__('messages.view_all_bookings')}}</a>
                             @endif
                         </div>
                         <!-- /.box-footer -->

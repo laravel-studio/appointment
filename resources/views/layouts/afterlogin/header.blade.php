@@ -18,12 +18,19 @@
 
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
+        @if(Auth::user()->type==config('global.user_type.superadmin'))
+        <li class="messages-menu" style="padding-top:3px;" >
+          <a href="{{url('/')}}/swagger/dist" target="_blank" class="dropdown-toggle" data-toggle="dropdown" onclick="location.href='/swagger/dist'">
+            <i class="fa fa-code" style="font-weight: 900;"><span style="padding-left:5px;">{{__('Swagger')}}</span></i>
+          </a>
+        </li>
 
         <li class="messages-menu" style="padding-top:3px;" >
             <a href="{{url('/')}}/docs" target="_blank" class="dropdown-toggle" data-toggle="dropdown" onclick="location.href='/docs'">
                 <i class="fa fa-book"><span style="padding-left:5px;">{{__('User Manual')}}</span></i>
             </a>
         </li>
+        @endif
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">

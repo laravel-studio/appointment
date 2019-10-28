@@ -1,17 +1,5 @@
 <?php
 
-// locale setup starts
-$lang_locale = 'en';
-$lang = App\Setting::select('option_value')->where('option_key', 'language')->get();
-$lang_val = $lang->toArray();
-if (count($lang_val) > 0) {
-    $lang_locale = $lang_val[0]['option_value'];
-}
-App::setLocale($lang_locale);
-
-
-// locale setup ends
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes

@@ -2,13 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\User;
 use App\Service;
+use App\Setting;
 use App\Employeeservice;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 Use Auth;
 class EmployeeserviceController extends Controller
 {
+    /**
+     * Constructor Function
+     */
+    public function __construct()
+    {
+        // locale setup starts
+        $lang_locale = 'en';
+        $lang = Setting::select('option_value')->where('option_key', 'language')->get();
+        $lang_val = $lang->toArray();
+        if (count($lang_val) > 0) {
+            $lang_locale = $lang_val[0]['option_value'];
+        }
+        App::setLocale($lang_locale);
+        // locale setup ends
+    }
     /**
      * Display a listing of the resource.
      *

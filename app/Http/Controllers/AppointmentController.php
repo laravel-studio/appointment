@@ -6,15 +6,32 @@ use App\Slot;
 use App\User;
 use DateTime;
 use App\Service;
+use App\Setting;
 use App\Appointment;
 use App\Employeeservice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 
 class AppointmentController extends Controller
 {
+    /**
+     * Constructor Function
+     */
+    public function __construct()
+    {
+        // locale setup starts
+        $lang_locale = 'en';
+        $lang = Setting::select('option_value')->where('option_key', 'language')->get();
+        $lang_val = $lang->toArray();
+        if (count($lang_val) > 0) {
+            $lang_locale = $lang_val[0]['option_value'];
+        }
+        App::setLocale($lang_locale);
+        // locale setup ends
+    }
     /**
      * Display a listing of the resource.
      *

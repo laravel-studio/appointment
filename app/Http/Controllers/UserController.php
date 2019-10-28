@@ -2,16 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Auth;
 use App\User;
-use Illuminate\Support\Facades\Hash;
+use App\Setting;
 use App\Exports\UsersExport;
-use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Http\Request;
 use App\Mail\RegistrationMail;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
+
 class UserController extends Controller
 {
     //
+    /**
+     * Constructor Function
+     */
+    public function __construct()
+    {
+        // locale setup starts
+        $lang_locale = 'en';
+        $lang = Setting::select('option_value')->where('option_key', 'language')->get();
+        $lang_val = $lang->toArray();
+        if (count($lang_val) > 0) {
+            $lang_locale = $lang_val[0]['option_value'];
+        }
+        App::setLocale($lang_locale);
+        // locale setup ends
+    }
     public function index()
     {
         $users = User::all();
@@ -21,7 +39,7 @@ class UserController extends Controller
     {
     	return view('users.add');
     }
-    public function store()
+    public function store(Request $request)
     {
 		$attributes = request()->validate([
             'name' => ['required', 'min:3'],
@@ -36,7 +54,7 @@ class UserController extends Controller
 		'type' => 3,
 		'status'=>1
 		]);
-         Mail::to($request->email)->send(new RegistrationMail($name));
+         Mail::to($request->email)->send(new RegistrationMail($request->name));
 		return redirect('users')->with('success', 'User created successfully.');
     }
     public function edit(User $user)
@@ -132,8 +150,8 @@ class UserController extends Controller
         return Excel::download(new UsersExport, 'users.xlsx');
     }
     public function verifyuser($id){
-      // echo $id; 
+      // echo $id;
       User::whereId(base64_decode($id))->update(['status'=>1]);
-     return view('layouts.beforelogin.emailverification');   
+     return view('layouts.beforelogin.emailverification');
     }
 }

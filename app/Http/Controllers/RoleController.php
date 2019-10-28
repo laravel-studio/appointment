@@ -2,15 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Role;
+use App\Setting;
 use App\Permission;
-use Illuminate\Support\Facades\DB;
 use App\Exports\RolesExport;
-use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
+
 class RoleController extends Controller
 {
+    /**
+     * Constructor Function
+     */
+    public function __construct()
+    {
+        // locale setup starts
+        $lang_locale = 'en';
+        $lang = Setting::select('option_value')->where('option_key', 'language')->get();
+        $lang_val = $lang->toArray();
+        if (count($lang_val) > 0) {
+            $lang_locale = $lang_val[0]['option_value'];
+        }
+        App::setLocale($lang_locale);
+        // locale setup ends
+    }
     /**
      * Display a listing of the resource.
      *

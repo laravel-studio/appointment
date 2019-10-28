@@ -3,15 +3,32 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Setting;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\EmployeesExport;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use \Illuminate\Support\Facades\Hash;
 
 class EmployeeController extends Controller
 {
+    /**
+     * Constructor Function
+     */
+    public function __construct()
+    {
+        // locale setup starts
+        $lang_locale = 'en';
+        $lang = Setting::select('option_value')->where('option_key', 'language')->get();
+        $lang_val = $lang->toArray();
+        if (count($lang_val) > 0) {
+            $lang_locale = $lang_val[0]['option_value'];
+        }
+        App::setLocale($lang_locale);
+        // locale setup ends
+    }
     /**
      * Display a listing of the resource.
      *
