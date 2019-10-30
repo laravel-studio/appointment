@@ -10,7 +10,7 @@
 ## Setup
 
 1. Go To root folder 
-2. `git clone git@bitbucket.org:itobuztech/appointment.git`
+2. `git clone git@github.com:laravel-studio/appointment.git`
 3. `cd appointment`
 4. `git checkout development`
 5. `git checkout -b <yourbranch> development`
